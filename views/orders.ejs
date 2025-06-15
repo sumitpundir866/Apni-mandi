@@ -1,0 +1,43 @@
+<%- include("partials/header2.ejs") %>
+
+<h2 class="text-center text-warning mt-4">My Orders</h2>
+
+<div class="container mt-10 mb-5">
+    <% if (orders.length === 0) { %>
+        <p class="text-white text-center">No orders placed yet.</p>
+    <% } else { %>
+        <div class="row">
+            <% orders.forEach(order => { %>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card shadow-lg border-0 bg-dark text-white overflow-hidden" style="border-radius: 15px;">
+                        
+                        <!-- Order Header -->
+                        <div class="card-header bg-warning text-dark text-center fw-bold">
+                            Order Details
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <h4 class="text-white fw-bold"><i class="fas fa-user"></i> Buyer: <%= order.name %></h4>
+                            <h5 class="card-title text-warning"><i class="fas fa-leaf"></i> Vegetable: <%= order.vegetable %></h5>
+                            
+                            <hr class="bg-light">
+
+                            <p class="card-text"><strong><i class="fas fa-envelope"></i> Email:</strong> <%= order.email %></p>
+                            <p class="card-text"><strong><i class="fas fa-shopping-cart"></i> Lots Purchased:</strong> <%= order.lots %></p>
+                            <p class="card-text text-success fw-bold"><i class="fas fa-tags"></i> Price: ₹<%= order.price %> per lot</p>
+
+                            <hr class="bg-light">
+
+                            <div class="text-center">
+                                <button class="btn btn-outline-warning">View More</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } %>
+</div>
+
+<%- include("partials/footer.ejs") %>

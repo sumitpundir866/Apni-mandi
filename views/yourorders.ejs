@@ -1,0 +1,43 @@
+<%- include("partials/header.ejs") %>
+
+<h2 class="text-center text-warning mt-4">Your Orders</h2>
+
+<div class="container mt-5 mb-5">
+    <% if (orders.length === 0) { %>
+        <p class="text-white text-center">No orders placed yet.</p>
+    <% } else { %>
+        <div class="d-flex flex-column gap-4">
+            <% orders.forEach(order => { %>
+                <div class="card shadow-lg border-0 bg-dark text-white w-100 overflow-hidden" style="border-radius: 15px;">
+                    <div class="row g-0 align-items-stretch">
+                        <% if (order.image_url) { %>
+                            <div class="col-md-4 col-sm-12 d-flex align-items-stretch">
+                                <img src="<%= order.image_url %>" class="card-img" alt="Product Image" style="width: 100%; height: 100%; object-fit: cover; border-top-left-radius: 15px; border-bottom-left-radius: 15px;">
+                            </div>
+                        <% } else { %>
+                            <div class="col-md-4 col-sm-12 d-flex align-items-center justify-content-center bg-secondary" style="height: 100%; border-top-left-radius: 15px; border-bottom-left-radius: 15px;">
+                                <span class="text-white">No Image</span>
+                            </div>
+                        <% } %>
+                        <div class="col-md-8 col-sm-12 p-4 d-flex align-items-center">
+                            <div class="card-body">
+                                <h4 class="text-white fw-bold">Seller Name: <%= user.fullname %></h4>
+                                <p class="text-white">Email: <%= user.email %></p>
+                                <h5 class="card-title text-warning"><%= order.vegetable %></h5>
+                                <% if (order.lots <= 0) { %>
+                                    <span class="badge bg-danger fs-6">SOLD</span>
+                                <% } else { %>
+                                    <p class="card-text"><strong>Lots:</strong> <%= order.lots %></p>
+                                <% } %>
+                                <p class="card-text text-light"><%= order.description %></p>
+                                <p class="card-text text-success fw-bold">Price: ₹<%= order.price %></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } %>
+</div>
+
+<%- include("partials/footer.ejs") %>

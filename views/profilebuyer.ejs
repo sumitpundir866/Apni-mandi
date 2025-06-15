@@ -1,0 +1,165 @@
+<%- include("partials/header2.ejs") %>
+
+<style>
+    /* General Styling */
+    html, body {
+        background-color: #000 !important;  /* Ensure dark background */
+        color: #f0f0f0; /* Light text for contrast */
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+
+    /* Container Wrapper */
+    .container-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+        gap: 30px;
+        flex-wrap: wrap;
+    }
+
+    /* Welcome Section */
+    .welcome-section {
+        flex: 1;
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        color: #ffd700; /* Gold color */
+        animation: slideInLeft 1s ease-in-out;
+    }
+
+    .welcome-section span {
+        color: #ff4500; /* Orange highlight */
+    }
+
+    /* Profile Card */
+    .profile-card {
+        flex: 1;
+        max-width: 450px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        text-align: center;
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    /* Profile Icon */
+    .profile-icon {
+        width: 90px;
+        height: 90px;
+        background: #ff4500; /* Orange */
+        color: #fff;
+        font-size: 36px;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        margin: 0 auto 15px;
+        text-transform: uppercase;
+    }
+
+    /* Info Items */
+    .info-item {
+        font-size: 18px;
+        margin: 12px 0;
+        color: #fff;
+    }
+
+    .info-item i {
+        margin-right: 12px;
+        color: #ffd700; /* Gold */
+    }
+
+    /* Buttons */
+    .btn-custom {
+        width: 100%;
+        background: #ffd700; /* Gold */
+        color: #000;
+        font-weight: bold;
+        padding: 12px;
+        border: none;
+        border-radius: 6px;
+        margin-top: 15px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .btn-custom:hover {
+        background: #ffcc00;
+        transform: scale(1.05);
+    }
+
+    .logout-btn {
+        background: #dc3545; /* Red */
+        color: #fff;
+        width: 100%;
+        padding: 12px;
+        border-radius: 6px;
+        font-weight: bold;
+        margin-top: 15px;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+
+    .logout-btn:hover {
+        background: #c82333;
+        transform: scale(1.05);
+    }
+
+    /* Animations */
+    @keyframes slideInLeft {
+        from { opacity: 0; transform: translateX(-50px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.9); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .container-wrapper {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .welcome-section {
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+    }
+</style>
+
+<body>
+
+<div class="container d-flex container-wrapper">
+    <!-- Left Section - Welcome Message -->
+    <div class="welcome-section">
+        <h1>Welcome <span><%= fullname %></span> to Apni Mandi!</h1>
+    </div>
+
+    <!-- Right Section - Profile Card -->
+    <div class="profile-card">
+        <div id="profileIcon" class="profile-icon" ><%= fullname ? fullname.charAt(0) : 'U' %></div>
+        <h2 class="text-white" id="userName"><%= fullname %></h2>
+        <div class="info-item"><i class="bi bi-envelope-fill"></i> <span id="userEmail"><%= email %></span></div>
+        <div class="info-item"><i class="bi bi-telephone-fill"></i> <span id="userPhone"><%= phone %></span></div>
+        <div class="info-item"><i class="bi bi-credit-card-2-front-fill"></i> <span id="userAadhar"><%= aadhar %></span></div>
+
+        <!-- Logout Button -->
+        <a href="/logout" class="btn logout-btn text-white">Logout</a>
+    </div>
+</div>
+
+</body>
+</html>
+
+<%- include("partials/footer.ejs") %>

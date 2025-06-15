@@ -1,0 +1,189 @@
+<%- include("partials/header.ejs") %>
+
+<style>
+    /* General Styling */
+    body {
+        background: linear-gradient(to right, #111, #222);
+        color: #fff;
+        font-family: 'Poppins', sans-serif;
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Background Styling */
+    .order-form-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 40px;
+        background: url('https://source.unsplash.com/1600x900/?farm,market') no-repeat center center/cover;
+    }
+
+    /* Form Box */
+    .order-form {
+        background: rgba(20, 20, 20, 0.95);
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(255, 255, 255, 0.2);
+        width: 100%;
+        max-width: 600px;
+        animation: popup 0.5s ease-in-out;
+        backdrop-filter: blur(10px);
+    }
+
+    @keyframes popup {
+        from {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    /* Form Heading */
+    .order-form h3 {
+        color: #ffcc00;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 25px;
+        position: relative;
+    }
+
+    .order-form h3::after {
+        content: '';
+        width: 60px;
+        height: 4px;
+        background: #ffcc00;
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 2px;
+    }
+
+    /* Input Fields */
+    .form-control {
+        border-radius: 10px;
+        border: 1px solid #ffcc00;
+        background: #111;
+        color: #fff;
+        transition: all 0.3s ease-in-out;
+        padding: 12px;
+    }
+
+    .form-control::placeholder {
+        color: #bbb;
+    }
+
+    .form-control:focus {
+        border-color: #ffcc00;
+        box-shadow: 0 0 12px rgba(255, 204, 0, 0.7);
+        transform: scale(1.03);
+    }
+
+    /* Select Dropdown */
+    .form-select {
+        border-radius: 10px;
+        background: #111;
+        color: white;
+    }
+
+    /* Submit Button */
+    .btn-custom {
+        background-color: #ffcc00;
+        color: black;
+        border-radius: 10px;
+        font-size: 1.2rem;
+        padding: 12px;
+        width: 100%;
+        font-weight: bold;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-custom:hover {
+        background-color: #e6b800;
+        transform: scale(1.07);
+        box-shadow: 0 6px 15px rgba(255, 204, 0, 0.7);
+    }
+
+    /* Form Hover Effect */
+    .order-form:hover {
+        box-shadow: 0 12px 40px rgba(255, 255, 255, 0.3);
+    }
+
+</style>
+
+<body>
+    <div class="order-form-container">
+        <div class="order-form">
+            <h3>Place Your Order</h3>
+            <form id="orderForm" action="/place" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label class="form-label text-white">Product Image</label>
+                    <input type="file" name="image" accept="image/*" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="text-white">Email</label>
+                    <input type="email" class="form-control" name="email" id="email" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-white">Vegetable Type</label>
+                    <select class="form-select" name="vegetableType" id="vegetableSelect">
+                        <option value="">Select Vegetable</option>
+                        <option value="Tomato">Tomato</option>
+                        <option value="Potato">Potato</option>
+                        <option value="Carrot">Carrot</option>
+                        <option value="Onion">Onion</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-white">Lots</label>
+                    <input type="number" class="form-control" name="lots" id="lotsInput" min="1" placeholder="Enter quantity">
+                    <div class="text-white mt-2" id="lotNote"></div> <!-- Note will appear here -->
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-white">Description</label>
+                    <textarea class="form-control" name="description" rows="3" placeholder="Enter product details"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-white">Price (per kg)</label>
+                    <input type="number" class="form-control" name="price" min="1" step="0.01" placeholder="Enter price">
+                </div>
+                <div class="text-center text-white">
+                    <button type="submit" class="btn btn-custom">Place Order</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById("vegetableSelect").addEventListener("change", function () {
+            let selectedVegetable = this.value;
+            let noteDiv = document.getElementById("lotNote");
+
+            let notes = {
+                "Tomato": "Note: 1 lot = 20kg",
+                "Potato": "Note: 1 lot = 100kg",
+                "Carrot": "Note: 1 lot = 40kg",
+                "Onion": "Note: 1 lot = 40kg"
+            };
+
+            noteDiv.textContent = notes[selectedVegetable] || "";
+        });
+    </script>    
+</body>
+<%- include("partials/footer.ejs") %>

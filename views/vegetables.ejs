@@ -1,0 +1,88 @@
+<%- include("partials/header2.ejs") %>
+
+<h2 class="text-center text-warning mt-4">All Products</h2>
+
+<div class="container mt-5 mb-5">
+    <% if (orders.length === 0) { %>
+        <p class="text-white text-center">No Products placed yet.</p>
+    <% } else { %>
+        <div class="d-flex flex-column gap-4">
+            <% orders.forEach(order => { %>
+                <div class="card shadow-lg border-0 bg-dark text-white overflow-hidden d-flex flex-md-row flex-column" style="border-radius: 15px;">
+                    
+                    <!-- Image Section -->
+                    <% if (order.image_url) { %>
+                        <div class="col-md-4 col-sm-12 d-flex align-items-stretch">
+                            <img src="<%= order.image_url %>" class="card-img" alt="Product Image" 
+                                 style="width: 100%; height: 100%; object-fit: cover; border-top-left-radius: 15px; border-bottom-left-radius: 15px;">
+                        </div>
+                    <% } else { %>
+                        <div class="col-md-4 col-sm-12 d-flex align-items-center justify-content-center bg-secondary"
+                             style="height: 100%; border-top-left-radius: 15px; border-bottom-left-radius: 15px;">
+                            <span class="text-white">No Image</span>
+                        </div>
+                    <% } %>
+
+                    <!-- Details Section -->
+                    <div class="col-md-8 col-sm-12 p-4 d-flex flex-column">
+                        <h4 class="text-white fw-bold">Seller: <%= order.name %></h4>
+                        <h5 class="card-title text-warning"><%= order.vegetable %></h5>
+                        <p class="card-text"><%= order.description %></p>
+                        <p class="card-text text-success fw-bold">Price: ₹<%= order.price %> per Kg</p>
+
+                        <% if (order.lots <= 0) { %>
+                            <span class="badge bg-danger fs-6">SOLD</span>
+                        <% } else { %>
+                            <p class="card-text"><strong>Available Lots:</strong> <%= order.lots %></p>
+
+                            <form action="/buy" method="POST" class="mt-auto" onsubmit="return validateLots(this, '<%= order.lots %>')">
+                                <input type="hidden" name="vegetable" value="<%= order.vegetable %>">
+                                <input type="hidden" name="price" value="<%= order.price %>">
+                                <input type="hidden" name="seller_email" value="<%= order.email %>">
+                                
+                                <div class="mb-3">
+                                    <label for="lots" class="form-label">Number of Lots:</label>
+                                    <input type="number" name="lots" min="1" max="<%= order.lots %>" class="form-control" required oninput="showLotNote('<%= order.vegetable %>', 'note-<%= order.vegetable %>')">
+                                </div>
+                                <p id="note-<%= order.vegetable %>" class="text-info"></p>
+                                <button type="submit" class="btn btn-success w-100">Buy Now</button>
+                            </form>
+                        <% } %>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } %>
+</div>
+
+<script>
+    function validateLots(form, availableLots) {
+        availableLots = parseInt(availableLots, 10); // Convert string to number
+        const lotsInput = form.querySelector('input[name="lots"]');
+        const enteredLots = parseInt(lotsInput.value, 10);
+
+        if (enteredLots > availableLots) {
+            alert("Available lots are less. Please enter a valid quantity.");
+            return false; // Prevent form submission
+        }
+        return true; // Allow form submission
+    }
+
+    let notes = {
+        "Tomato": "Note: 1 lot = 20kg",
+        "Potato": "Note: 1 lot = 100kg",
+        "Carrot": "Note: 1 lot = 40kg",
+        "Onion": "Note: 1 lot = 40kg"
+    };
+
+    function showLotNote(vegetable, noteElementId) {
+        let noteElement = document.getElementById(noteElementId);
+        if (notes[vegetable]) {
+            noteElement.innerText = notes[vegetable]; // Show note
+        } else {
+            noteElement.innerText = ""; // Hide if not found
+        }
+    }
+</script>
+
+<%- include("partials/footer.ejs") %>
